@@ -6,74 +6,76 @@
 #include "FindMatch.h"
 using namespace std;
 
-bool IsEligibleForL(int horMatchSize, int index)
+MatchList GetVerticalMatchForL(int row, int col, int num, int** grid, int way, int horSize, MatchList& matches)
 {
-	//For L match can only happen either on first or last element of match in a row
-	return (index == 0) || (index + 1 == horMatchSize);
+	matches.push_back(make_pair(row, col));
+
+	for (int offset = 1; offset < num; offset++)
+	{
+		int z = way ? row + offset : row - offset;
+		if (z < 0 || z >= num) {
+			break;
+		}
+
+		if (grid[z][col] == grid[row][col]) {
+			if (way)
+			{
+				matches.push_back(make_pair(z, col));
+			}
+			else
+			{
+				matches.insert(matches.begin(), make_pair(z, col));
+			}
+		}
+		else {
+			break;
+		}
+	}
+
+	if (matches.size() != horSize)
+	{
+		matches.clear();
+	}
+	return matches;
 }
 
 MatchList GetLMatch(int row, int col, int nrow, int ncol, int** grid)
 {
 	MatchList horizontalMatch;
 	MatchList verticalMatch;
-	std::set<Match> LMatchSet;
+	set<Match> LMatchSet;
 
 	horizontalMatch = GetMatch(row, col, ncol, grid, Direction::Horizontal);
 
-	bool eligibleForL = false;
-	if (horizontalMatch.size() >= 2)
+	int horSize = horizontalMatch.size();
+	if(horSize >= 2)
 	{
-		//veritcal travesal from either of these horizantalmatch positions
-		for (unsigned int i = 0; i < horizontalMatch.size(); ++i)
+		GetVerticalMatchForL(horizontalMatch[0].first, horizontalMatch[0].second, nrow, grid, 0, horSize, verticalMatch);
+		if (verticalMatch.empty())
 		{
-			verticalMatch.clear();
-			verticalMatch.push_back(std::make_pair(horizontalMatch[i].first, horizontalMatch[i].second));
-			//need to find a way to exlude square
-			eligibleForL = IsEligibleForL(horizontalMatch.size(), i);
-			for (int dir = 0; dir <= 1; dir++) {
-				for (int x0ffset = 1; x0ffset < nrow; x0ffset++) {
-					int x;
-
-					if (dir == 0) {//up
-						x = horizontalMatch[i].first - x0ffset;
-					}
-					else {//down
-						x = horizontalMatch[i].first + x0ffset;
-					}
-
-					if (x < 0 || x >= nrow) {
-						break;
-					}
-
-					if (grid[x][horizontalMatch[i].second] == grid[horizontalMatch[i].first][horizontalMatch[i].second]) {
-						verticalMatch.push_back(std::make_pair(x, horizontalMatch[i].second));
-					}
-					else {
-						break;
-					}
-				}
-
-				if (horizontalMatch.size() == verticalMatch.size() && eligibleForL) {
-					for (unsigned int i = 0; i < horizontalMatch.size(); i++) {
-						LMatchSet.insert(horizontalMatch[i]);
-					}
-					for (unsigned int i = 1; i < verticalMatch.size(); i++) {
-						LMatchSet.insert(verticalMatch[i]);
-					}
-					break;
-				}
-				else if (dir == 0)
+			GetVerticalMatchForL(horizontalMatch[0].first, horizontalMatch[0].second, nrow, grid, 1, horSize, verticalMatch);
+			if (verticalMatch.empty())
+			{
+				GetVerticalMatchForL(horizontalMatch[horSize - 1].first, horizontalMatch[horSize - 1].second, nrow, grid, 0, horSize, verticalMatch);
+				if (verticalMatch.empty())
 				{
-					verticalMatch.clear();
-					verticalMatch.push_back(std::make_pair(horizontalMatch[i].first, horizontalMatch[i].second));
+					GetVerticalMatchForL(horizontalMatch[horSize - 1].first, horizontalMatch[horSize - 1].second, nrow, grid, 1, horSize, verticalMatch);
 				}
 			}
 		}
 	}
 
+	if (horizontalMatch.size() == verticalMatch.size()) {
+		for (unsigned int i = 0; i < horizontalMatch.size(); i++) {
+			LMatchSet.insert(horizontalMatch[i]);
+		}
+		for (unsigned int i = 0; i < verticalMatch.size(); i++) {
+			LMatchSet.insert(verticalMatch[i]);
+		}
+	}
+
 	MatchList matchingList;
-	//check for 4 is temp to exclude square
-	if (!LMatchSet.empty() && LMatchSet.size() !=4 )
+	if (!LMatchSet.empty())
 	{
 		matchingList.insert(matchingList.begin(), LMatchSet.begin(), LMatchSet.end());
 	}
@@ -94,7 +96,8 @@ set<MatchList> FindLShapeMatches(int** grid, int nrow, int ncol)
 				if (match.size() >= 3)
 				{
 					allLMatches.insert(match);
-					j = j + match.back().second + 1;
+					//j = j + match.back().second + 1;
+					++j;
 				}
 				else
 				{
