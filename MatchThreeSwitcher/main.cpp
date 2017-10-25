@@ -40,7 +40,11 @@ int main() {
 	}
 	auto newMatch = GetAllHorVerMatches(arrPointer, 8, 8);
 	auto sortedMatch = SortMatchList(newMatch);
-	auto smallLMatch = GetAllShapeMatches(arrPointer, 8, 8);
+	auto smallLMatch = FindLShapeMatches(arrPointer, 8, 8);
+	
+	int temp;
+	cout << "This is Match-Three Switcher";
+	cin >> temp;
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -48,9 +52,6 @@ int main() {
 	}
 	delete(arrPointer);
 
-	int temp;
-	cout << "This is Match-Three Switcher";
-	cin >> temp;
 	return 0;
 	
 }
