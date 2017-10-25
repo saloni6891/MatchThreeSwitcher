@@ -4,7 +4,7 @@
 #include <iostream>
 #include <algorithm>
 //#include "Match.h
-#include "FindMatch.h"
+#include "FindShapeMatch.h"
 #include "ShapeMatch.h"
 using namespace std;
 
@@ -39,7 +39,7 @@ int main() {
 		arrPointer[i] = arrTest[i];
 	}
 	auto newMatch = GetAllHorVerMatches(arrPointer, 8, 8);
-	//auto sortedMatch = sortMatchList(newMatch);
+	auto sortedMatch = SortMatchList(newMatch);
 	auto smallLMatch = GetAllShapeMatches(arrPointer, 8, 8);
 
 	for (int i = 0; i < 8; i++)

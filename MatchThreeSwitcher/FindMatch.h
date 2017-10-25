@@ -30,7 +30,14 @@ MatchList GetMatch(int row, int col, int num, int** grid, Direction dir)
 				}
 
 				if (grid[z][col] == grid[row][col]) {
-					matches.push_back(make_pair(z, col));
+					if (i)
+					{
+						matches.push_back(make_pair(z, col));
+					}
+					else
+					{
+						matches.insert(matches.begin(), make_pair(z, col));
+					}
 				}
 				else {
 					break;
@@ -45,7 +52,15 @@ MatchList GetMatch(int row, int col, int num, int** grid, Direction dir)
 				}
 
 				if (grid[row][z] == grid[row][col]) {
-					matches.push_back(make_pair(row, z));
+					if (i)
+					{
+						matches.push_back(make_pair(row, z));
+					}
+					else
+					{
+						matches.insert(matches.begin(), make_pair(row, z));
+					}
+					
 				}
 				else {
 					break;
@@ -53,11 +68,6 @@ MatchList GetMatch(int row, int col, int num, int** grid, Direction dir)
 			}
 
 		}
-	}
-
-
-	if (matches.size() < 3) {
-		matches.clear();
 	}
 
 	return matches;
@@ -80,7 +90,7 @@ void GetMatchesInOneDirection(int** grid, int nrow, int ncol, vector<MatchList>&
 				 match = GetMatch(i, j, ncol, grid, Direction::Horizontal);
 			}
 			
-			if (!match.empty())
+			if (match.size() >=3)
 			{
 				matches.push_back(match);
 				j = j + match.back().second + 1;
@@ -105,3 +115,13 @@ vector<MatchList> GetAllHorVerMatches(int** grid, int nrow, int ncol)
 	return allMatches;
 }
 
+bool SortBySize(const MatchList &a, const MatchList &b)
+{
+	return (a.size() < b.size());
+}
+
+vector<MatchList> SortMatchList(std::vector<MatchList>& matchList)
+{
+	sort(matchList.begin(), matchList.end(), SortBySize);
+	return matchList;
+}
