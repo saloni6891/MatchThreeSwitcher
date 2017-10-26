@@ -6,19 +6,18 @@
 #include "FindMatch.h"
 using namespace std;
 
-MatchList GetVerticalMatchForL(int row, int col, int num, int** grid, int way, int horSize, MatchList& matches)
+MatchList GetVerMatch(int row, int col, int maxOffset, int** grid, int dir, int horSize, MatchList& matches)
 {
 	matches.push_back(make_pair(row, col));
 
-	for (int offset = 1; offset < num; offset++)
+	for (int offset = 1; offset < maxOffset; offset++)
 	{
-		int z = way ? row + offset : row - offset;
-		if (z < 0 || z >= num) {
-			break;
-		}
+		int z = dir ? row + offset : row - offset;
+		if (z < 0 || z >= maxOffset) { break; }
 
-		if (grid[z][col] == grid[row][col]) {
-			if (way)
+		if (grid[z][col] == grid[row][col]) 
+		{
+			if (dir)
 			{
 				matches.push_back(make_pair(z, col));
 			}
@@ -41,36 +40,36 @@ MatchList GetVerticalMatchForL(int row, int col, int num, int** grid, int way, i
 
 MatchList GetLMatch(int row, int col, int nrow, int ncol, int** grid)
 {
-	MatchList horizontalMatch;
-	MatchList verticalMatch;
-	set<Match> LMatchSet;
+	MatchList horMatch;
+	MatchList verMatch;
+	MatchSet LMatchSet;
 
-	horizontalMatch = GetMatch(row, col, ncol, grid, Direction::Horizontal);
+	horMatch = GetMatch(row, col, ncol, grid, Direction::Horizontal);
 
-	int horSize = horizontalMatch.size();
+	int horSize = horMatch.size();
 	if(horSize >= 2)
 	{
-		GetVerticalMatchForL(horizontalMatch[0].first, horizontalMatch[0].second, nrow, grid, 0, horSize, verticalMatch);
-		if (verticalMatch.empty())
+		GetVerMatch(horMatch[0].first, horMatch[0].second, nrow, grid, 0, horSize, verMatch);
+		if (verMatch.empty())
 		{
-			GetVerticalMatchForL(horizontalMatch[0].first, horizontalMatch[0].second, nrow, grid, 1, horSize, verticalMatch);
-			if (verticalMatch.empty())
+			GetVerMatch(horMatch[0].first, horMatch[0].second, nrow, grid, 1, horSize, verMatch);
+			if (verMatch.empty())
 			{
-				GetVerticalMatchForL(horizontalMatch[horSize - 1].first, horizontalMatch[horSize - 1].second, nrow, grid, 0, horSize, verticalMatch);
-				if (verticalMatch.empty())
+				GetVerMatch(horMatch[horSize - 1].first, horMatch[horSize - 1].second, nrow, grid, 0, horSize, verMatch);
+				if (verMatch.empty())
 				{
-					GetVerticalMatchForL(horizontalMatch[horSize - 1].first, horizontalMatch[horSize - 1].second, nrow, grid, 1, horSize, verticalMatch);
+					GetVerMatch(horMatch[horSize - 1].first, horMatch[horSize - 1].second, nrow, grid, 1, horSize, verMatch);
 				}
 			}
 		}
 	}
 
-	if (horizontalMatch.size() == verticalMatch.size()) {
-		for (unsigned int i = 0; i < horizontalMatch.size(); i++) {
-			LMatchSet.insert(horizontalMatch[i]);
+	if (horMatch.size() == verMatch.size()) {
+		for (unsigned int i = 0; i < horMatch.size(); i++) {
+			LMatchSet.insert(horMatch[i]);
 		}
-		for (unsigned int i = 0; i < verticalMatch.size(); i++) {
-			LMatchSet.insert(verticalMatch[i]);
+		for (unsigned int i = 0; i < verMatch.size(); i++) {
+			LMatchSet.insert(verMatch[i]);
 		}
 	}
 

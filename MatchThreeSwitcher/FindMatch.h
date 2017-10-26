@@ -5,31 +5,33 @@
 #include <algorithm>
 using namespace std;
 
-using Match = std::pair<int, int>;
-using MatchList = std::vector<Match>;
+using Match = pair<int, int>;
+using MatchList = vector<Match>;
+using MatchSet = set<Match>;
 enum Direction
 {
 	Horizontal,
 	Vertical
 };
 
-MatchList GetMatch(int row, int col, int num, int** grid, Direction dir)
+MatchList GetMatch(int row, int col, int maxOffset, int** grid, Direction dir)
 {
 	MatchList matches;
 
 	matches.push_back(make_pair(row, col));
 
-	for (int i = 0; i <= 1; i++) {
-		for (int offset = 1; offset < num; offset++) {
+	for (int i = 0; i <= 1; i++) 
+	{
+		for (int offset = 1; offset < maxOffset; offset++) 
+		{
 			if (dir == Direction::Vertical)
 			{
 				int z = i ? row + offset : row - offset;
 
-				if (z < 0 || z >= num) {
-					break;
-				}
+				if (z < 0 || z >= maxOffset) { break;}
 
-				if (grid[z][col] == grid[row][col]) {
+				if (grid[z][col] == grid[row][col]) 
+				{
 					if (i)
 					{
 						matches.push_back(make_pair(z, col));
@@ -39,7 +41,8 @@ MatchList GetMatch(int row, int col, int num, int** grid, Direction dir)
 						matches.insert(matches.begin(), make_pair(z, col));
 					}
 				}
-				else {
+				else 
+				{
 					break;
 				}
 			}
@@ -47,11 +50,10 @@ MatchList GetMatch(int row, int col, int num, int** grid, Direction dir)
 			{ 
 				int z = i ? col + offset : col - offset;
 
-				if (z < 0 || z >= num) {
-					break;
-				}
+				if (z < 0 || z >= maxOffset) { break; }
 
-				if (grid[row][z] == grid[row][col]) {
+				if (grid[row][z] == grid[row][col]) 
+				{
 					if (i)
 					{
 						matches.push_back(make_pair(row, z));
@@ -66,14 +68,13 @@ MatchList GetMatch(int row, int col, int num, int** grid, Direction dir)
 					break;
 				}
 			}
-
 		}
 	}
 
 	return matches;
 }
 
-void GetMatchesInOneDirection(int** grid, int nrow, int ncol, vector<MatchList>& matches, Direction dir)
+void GetDirMatches(int** grid, int nrow, int ncol, vector<MatchList>& matches, Direction dir)
 {
 	for (int i = 0; i < nrow; ++i)
 	{
@@ -105,28 +106,23 @@ void GetMatchesInOneDirection(int** grid, int nrow, int ncol, vector<MatchList>&
 
 }
 
-vector<MatchList> GetAllHorVerMatches(int** grid, int nrow, int ncol)
+void GetAllHorVerMatches(int** grid, int nrow, int ncol, vector<MatchList>& matchList)
 {
-	vector<MatchList> allMatches;
-
-	GetMatchesInOneDirection(grid, nrow, ncol, allMatches, Direction::Horizontal);
-	GetMatchesInOneDirection(grid, ncol, nrow, allMatches, Direction::Vertical);
-
-	return allMatches;
+	GetDirMatches(grid, nrow, ncol, matchList, Direction::Horizontal);
+	GetDirMatches(grid, ncol, nrow, matchList, Direction::Vertical);
 }
 
-bool SortBySizeAscending(const MatchList &a, const MatchList &b)
+bool SortBySizeAsc(const MatchList &a, const MatchList &b)
 {
 	return (a.size() < b.size());
 }
 
-bool SortBySizeDescending(const MatchList &a, const MatchList &b)
+bool SortBySizeDesc(const MatchList &a, const MatchList &b)
 {
 	return (a.size() > b.size());
 }
 
-vector<MatchList> SortMatchList(std::vector<MatchList>& matchList)
+void SortMatchList(std::vector<MatchList>& matchList)
 {
-	sort(matchList.begin(), matchList.end(), SortBySizeDescending);
-	return matchList;
+	sort(matchList.begin(), matchList.end(), SortBySizeDesc);
 }

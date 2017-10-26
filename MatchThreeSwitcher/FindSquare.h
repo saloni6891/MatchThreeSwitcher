@@ -17,11 +17,11 @@ MatchList GetSquareMatch(int row, int col, int nrow, int ncol, int** grid)
 	int horSize = horizontalMatch.size();
 	if (horSize == 2)
 	{
-		GetVerticalMatchForL(horizontalMatch[0].first, horizontalMatch[0].second, nrow, grid, 0, horSize, verticalMatch);
+		GetVerMatch(horizontalMatch[0].first, horizontalMatch[0].second, nrow, grid, 0, horSize, verticalMatch);
 		if (!verticalMatch.empty())
 		{
 			verticalMatch.clear();
-			GetVerticalMatchForL(horizontalMatch[horSize - 1].first, horizontalMatch[horSize - 1].second, nrow, grid, 0, horSize, verticalMatch);
+			GetVerMatch(horizontalMatch[horSize - 1].first, horizontalMatch[horSize - 1].second, nrow, grid, 0, horSize, verticalMatch);
 			if (!verticalMatch.empty())
 			{
 				verticalMatch.clear();
@@ -31,11 +31,11 @@ MatchList GetSquareMatch(int row, int col, int nrow, int ncol, int** grid)
 		}
 		else
 		{
-			GetVerticalMatchForL(horizontalMatch[0].first, horizontalMatch[0].second, nrow, grid, 1, horSize, verticalMatch);
+			GetVerMatch(horizontalMatch[0].first, horizontalMatch[0].second, nrow, grid, 1, horSize, verticalMatch);
 			if (!verticalMatch.empty())
 			{
 				verticalMatch.clear();
-				GetVerticalMatchForL(horizontalMatch[horSize - 1].first, horizontalMatch[horSize - 1].second, nrow, grid, 1, horSize, verticalMatch);
+				GetVerMatch(horizontalMatch[horSize - 1].first, horizontalMatch[horSize - 1].second, nrow, grid, 1, horSize, verticalMatch);
 				if (!verticalMatch.empty())
 				{
 					verticalMatch.clear();

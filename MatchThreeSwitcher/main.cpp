@@ -40,8 +40,10 @@ int main() {
 	{
 		arrPointer[i] = arrTest[i];
 	}
-	auto newMatch = GetAllHorVerMatches(arrPointer, 8, 8);
-	auto sortedMatch = SortMatchList(newMatch);
+
+	vector<MatchList> matches;
+	GetAllHorVerMatches(arrPointer, 8, 8, matches);
+	SortMatchList(matches);
 	auto smallLMatch = FindZShapeMatches(arrPointer, 8, 8);
 	auto finalSortMatch = SortAndRejectMatches(arrPointer, 8, 8);
 	

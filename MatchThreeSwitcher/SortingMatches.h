@@ -34,24 +34,20 @@ vector<MatchList> SortAndRejectMatches(int** grid, int nrow, int ncol)
 	allMatches.insert(allMatches.end(), SquareMatch.begin(), SquareMatch.end());
 	allMatches.insert(allMatches.end(), ZMatch.begin(), ZMatch.end());
 
-	auto sortedMatches = SortMatchList(allMatches);
+	SortMatchList(allMatches);
 	set<Match> matchedElements;
 	vector<MatchList> allSortedMatches;
 
-	for (int i = 0; i < sortedMatches.size(); i++)
+	for (int i = 0; i < allMatches.size(); i++)
 	{
-		//check is all the elements of sortedMatches[i] is in matched elements set
-		if(!IsInMatchedElements(sortedMatches[i], matchedElements))
+		if(!IsInMatchedElements(allMatches[i], matchedElements))
 		{
-			//if it is not
-			//add all elements of sortedMatches[i] to matchedElements
-			//push_back sortedMatches[i] to allSortedMatches
-			MatchList matchToAdd = sortedMatches[i];
+			MatchList matchToAdd = allMatches[i];
 			for (int j = 0; j < matchToAdd.size(); j++)
 			{
 				matchedElements.insert(matchToAdd[j]);
 			}
-			allSortedMatches.push_back(sortedMatches[i]);
+			allSortedMatches.push_back(allMatches[i]);
 		}
 		else
 		{

@@ -17,11 +17,11 @@ MatchList GetZMatch(int row, int col, int nrow, int ncol, int** grid)
 	int horSize = horMatch.size();
 	if (horSize == 2)
 	{
-		GetVerticalMatchForL(horMatch[0].first, horMatch[0].second, nrow, grid, 0, horSize, verMatch);
+		GetVerMatch(horMatch[0].first, horMatch[0].second, nrow, grid, 0, horSize, verMatch);
 		if (!verMatch.empty())
 		{
 			verMatch.clear();
-			GetVerticalMatchForL(horMatch[horSize - 1].first, horMatch[horSize - 1].second, nrow, grid, 1, horSize, verMatch);
+			GetVerMatch(horMatch[horSize - 1].first, horMatch[horSize - 1].second, nrow, grid, 1, horSize, verMatch);
 			if (!verMatch.empty())
 			{
 				verMatch.clear();
@@ -31,11 +31,11 @@ MatchList GetZMatch(int row, int col, int nrow, int ncol, int** grid)
 		}
 		else
 		{
-				GetVerticalMatchForL(horMatch[0].first, horMatch[0].second, nrow, grid, 1, horSize, verMatch);
+				GetVerMatch(horMatch[0].first, horMatch[0].second, nrow, grid, 1, horSize, verMatch);
 				if (!verMatch.empty())
 				{
 					verMatch.clear();
-					GetVerticalMatchForL(horMatch[horSize - 1].first, horMatch[horSize - 1].second, nrow, grid, 0, horSize, verMatch);
+					GetVerMatch(horMatch[horSize - 1].first, horMatch[horSize - 1].second, nrow, grid, 0, horSize, verMatch);
 					if (!verMatch.empty())
 					{
 						verMatch.clear();
@@ -51,7 +51,7 @@ MatchList GetZMatch(int row, int col, int nrow, int ncol, int** grid)
 				}
 				else
 				{
-					GetVerticalMatchForL(horMatch[horSize - 1].first, horMatch[horSize - 1].second, nrow, grid, 1, horSize, verMatch);
+					GetVerMatch(horMatch[horSize - 1].first, horMatch[horSize - 1].second, nrow, grid, 1, horSize, verMatch);
 					if (!verMatch.empty())
 					{
 						verMatch.clear();
