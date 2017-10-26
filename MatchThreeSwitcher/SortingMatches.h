@@ -32,7 +32,7 @@ vector<MatchList> SortAndRejectMatches(int** grid, int nrow, int ncol)
 	SortMatchList(allShapes);
 	set<Match> matchedElements;
 	vector<MatchList> allSortedMatches;
-
+	
 	for (int i = 0; i < allShapes.size(); i++)
 	{
 		if(!IsInMatchedElements(allShapes[i], matchedElements))

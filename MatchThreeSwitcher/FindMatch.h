@@ -76,25 +76,27 @@ MatchList GetMatch(int row, int col, int maxOffset, int** grid, Direction dir)
 
 void GetDirMatches(int** grid, int nrow, int ncol, vector<MatchList>& matches, Direction dir)
 {
-	for (int i = 0; i < nrow; ++i)
+	int max1 = dir == Direction::Horizontal ? nrow : ncol;
+	int max2 = dir == Direction::Horizontal ? ncol : nrow;
+	for (int i = 0; i < max1; ++i)
 	{
 		int j = 0;
-		while (j < ncol)
+		while (j < max2)
 		{
 			MatchList match;
 			if (dir == Direction::Vertical)
 			{
-				match = GetMatch(j, i, ncol, grid, Direction::Vertical);
+				match = GetMatch(j, i, max2, grid, Direction::Vertical);
 			}
 			else
 			{
-				 match = GetMatch(i, j, ncol, grid, Direction::Horizontal);
+				 match = GetMatch(i, j, max2, grid, Direction::Horizontal);
 			}
 			
 			if (match.size() >=3)
 			{
 				matches.push_back(match);
-				j = j + match.back().second + 1;
+				j = (dir == Direction::Horizontal ? match.back().second : match.back().first ) + 1;
 			}
 			else
 			{
@@ -109,7 +111,7 @@ void GetDirMatches(int** grid, int nrow, int ncol, vector<MatchList>& matches, D
 void GetAllHorVerMatches(int** grid, int nrow, int ncol, vector<MatchList>& matchList)
 {
 	GetDirMatches(grid, nrow, ncol, matchList, Direction::Horizontal);
-	GetDirMatches(grid, ncol, nrow, matchList, Direction::Vertical);
+	GetDirMatches(grid, nrow, ncol, matchList, Direction::Vertical);
 }
 
 bool SortBySizeAsc(const MatchList &a, const MatchList &b)
@@ -122,7 +124,7 @@ bool SortBySizeDesc(const MatchList &a, const MatchList &b)
 	return (a.size() > b.size());
 }
 
-void SortMatchList(std::vector<MatchList>& matchList)
+void SortMatchList(vector<MatchList>& matchList)
 {
 	sort(matchList.begin(), matchList.end(), SortBySizeDesc);
 }
