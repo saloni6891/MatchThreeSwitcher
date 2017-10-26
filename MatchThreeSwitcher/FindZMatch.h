@@ -1,4 +1,3 @@
-/*
 #pragma once
 #include <cmath>
 #include <vector>
@@ -9,56 +8,69 @@ using namespace std;
 
 MatchList GetZMatch(int row, int col, int nrow, int ncol, int** grid)
 {
-	MatchList horizontalMatch;
-	MatchList verticalMatch;
+	MatchList horMatch;
+	MatchList verMatch;
 	set<Match> ZSet;
 
-	horizontalMatch = GetMatch(row, col, ncol, grid, Direction::Horizontal);
+	horMatch = GetMatch(row, col, ncol, grid, Direction::Horizontal);
 
-	int horSize = horizontalMatch.size();
+	int horSize = horMatch.size();
 	if (horSize == 2)
 	{
-		GetVerticalMatchForL(horizontalMatch[0].first, horizontalMatch[0].second, nrow, grid, 0, horSize, verticalMatch);
-		if (!verticalMatch.empty())
+		GetVerticalMatchForL(horMatch[0].first, horMatch[0].second, nrow, grid, 0, horSize, verMatch);
+		if (!verMatch.empty())
 		{
-			verticalMatch.clear();
-			GetVerticalMatchForL(horizontalMatch[horSize - 1].first, horizontalMatch[horSize - 1].second, nrow, grid, 1, horSize, verticalMatch);
-			if (!verticalMatch.empty())
+			verMatch.clear();
+			GetVerticalMatchForL(horMatch[horSize - 1].first, horMatch[horSize - 1].second, nrow, grid, 1, horSize, verMatch);
+			if (!verMatch.empty())
 			{
-				verticalMatch.clear();
-				verticalMatch.push_back(make_pair(horizontalMatch[0].first - 1, horizontalMatch[0].second));
-				verticalMatch.push_back(make_pair(horizontalMatch[horSize - 1].first + 1, horizontalMatch[horSize - 1].second));
+				verMatch.clear();
+				verMatch.push_back(make_pair(horMatch[0].first - 1, horMatch[0].second));
+				verMatch.push_back(make_pair(horMatch[horSize - 1].first + 1, horMatch[horSize - 1].second));
 			}
 		}
 		else
 		{
-				GetVerticalMatchForL(horizontalMatch[0].first, horizontalMatch[0].second, nrow, grid, 1, horSize, verticalMatch);
-				if (!verticalMatch.empty())
+				GetVerticalMatchForL(horMatch[0].first, horMatch[0].second, nrow, grid, 1, horSize, verMatch);
+				if (!verMatch.empty())
 				{
-					verticalMatch.clear();
-					GetVerticalMatchForL(horizontalMatch[horSize - 1].first, horizontalMatch[horSize - 1].second, nrow, grid, 0, horSize, verticalMatch);
-					if (!verticalMatch.empty())
+					verMatch.clear();
+					GetVerticalMatchForL(horMatch[horSize - 1].first, horMatch[horSize - 1].second, nrow, grid, 0, horSize, verMatch);
+					if (!verMatch.empty())
 					{
-						verticalMatch.clear();
-						verticalMatch.push_back(make_pair(horizontalMatch[0].first + 1, horizontalMatch[0].second));
-						verticalMatch.push_back(make_pair(horizontalMatch[horSize - 1].first - 1, horizontalMatch[horSize - 1].second));
+						verMatch.clear();
+						verMatch.push_back(make_pair(horMatch[0].first + 1, horMatch[0].second));
+						verMatch.push_back(make_pair(horMatch[horSize - 1].first - 1, horMatch[horSize - 1].second));
 					}
-					else if ()
+					else if (grid[horMatch[0].first][horMatch[0].second] == grid[horMatch[0].first + 1][horMatch[0].second - 1])
 					{
-						verticalMatch.clear();
-						verticalMatch.push_back(make_pair(horizontalMatch[0].first + 1, horizontalMatch[0].second));
-						verticalMatch.push_back(make_pair(horizontalMatch[horSize - 1].first + 1, horizontalMatch[0].second - 1));
+						verMatch.clear();
+						verMatch.push_back(make_pair(horMatch[0].first + 1, horMatch[0].second));
+						verMatch.push_back(make_pair(horMatch[horSize - 1].first + 1, horMatch[0].second - 1));
 					}
-			}
+				}
+				else
+				{
+					GetVerticalMatchForL(horMatch[horSize - 1].first, horMatch[horSize - 1].second, nrow, grid, 1, horSize, verMatch);
+					if (!verMatch.empty())
+					{
+						verMatch.clear();
+						if (grid[horMatch[horSize-1].first][horMatch[horSize-1].second] == grid[horMatch[horSize - 1].first + 1][horMatch[horSize - 1].second + 1])
+						{
+							verMatch.push_back(make_pair(horMatch[horSize - 1].first + 1, horMatch[horSize - 1].second));
+							verMatch.push_back(make_pair(horMatch[horSize - 1].first + 1, horMatch[horSize - 1].second + 1));
+						}
+					}
+				}
 		}
 	}
 
-	if (horizontalMatch.size() == verticalMatch.size()) {
-		for (unsigned int i = 0; i < horizontalMatch.size(); i++) {
-			ZSet.insert(horizontalMatch[i]);
+	if (horMatch.size() == verMatch.size()) {
+		for (unsigned int i = 0; i < horMatch.size(); i++) {
+			ZSet.insert(horMatch[i]);
 		}
-		for (unsigned int i = 0; i < verticalMatch.size(); i++) {
-			ZSet.insert(verticalMatch[i]);
+		for (unsigned int i = 0; i < verMatch.size(); i++) {
+			ZSet.insert(verMatch[i]);
 		}
 	}
 
@@ -72,7 +84,7 @@ MatchList GetZMatch(int row, int col, int nrow, int ncol, int** grid)
 }
 
 
-set<MatchList> FindSShapeMatches(int** grid, int nrow, int ncol)
+set<MatchList> FindZShapeMatches(int** grid, int nrow, int ncol)
 {
 	set<MatchList> allLMatches;
 	for (int i = 0; i < nrow; ++i)
@@ -95,4 +107,3 @@ set<MatchList> FindSShapeMatches(int** grid, int nrow, int ncol)
 
 	return allLMatches;
 }
-*/

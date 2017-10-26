@@ -6,6 +6,7 @@
 //#include "Match.h
 #include "FindSquare.h"
 #include "ShapeMatch.h"
+#include "FindZMatch.h"
 using namespace std;
 
 int main() {
@@ -40,7 +41,7 @@ int main() {
 	}
 	auto newMatch = GetAllHorVerMatches(arrPointer, 8, 8);
 	auto sortedMatch = SortMatchList(newMatch);
-	auto smallLMatch = FindSquareShapeMatches(arrPointer, 8, 8);
+	auto smallLMatch = FindZShapeMatches(arrPointer, 8, 8);
 	
 	int temp;
 	cout << "This is Match-Three Switcher";
