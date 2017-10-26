@@ -1,18 +1,4 @@
-#pragma once
-#include <cmath>
-#include <cstdio>
-#include <vector>
-#include <algorithm>
-using namespace std;
-
-using Match = pair<int, int>;
-using MatchList = vector<Match>;
-using MatchSet = set<Match>;
-enum Direction
-{
-	Horizontal,
-	Vertical
-};
+#include "MatchThree.h"
 
 MatchList GetMatch(int row, int col, int maxOffset, int** grid, Direction dir)
 {
@@ -20,17 +6,17 @@ MatchList GetMatch(int row, int col, int maxOffset, int** grid, Direction dir)
 
 	matches.push_back(make_pair(row, col));
 
-	for (int i = 0; i <= 1; i++) 
+	for (int i = 0; i <= 1; i++)
 	{
-		for (int offset = 1; offset < maxOffset; offset++) 
+		for (int offset = 1; offset < maxOffset; offset++)
 		{
 			if (dir == Direction::Vertical)
 			{
 				int z = i ? row + offset : row - offset;
 
-				if (z < 0 || z >= maxOffset) { break;}
+				if (z < 0 || z >= maxOffset) { break; }
 
-				if (grid[z][col] == grid[row][col]) 
+				if (grid[z][col] == grid[row][col])
 				{
 					if (i)
 					{
@@ -41,18 +27,18 @@ MatchList GetMatch(int row, int col, int maxOffset, int** grid, Direction dir)
 						matches.insert(matches.begin(), make_pair(z, col));
 					}
 				}
-				else 
+				else
 				{
 					break;
 				}
 			}
 			else
-			{ 
+			{
 				int z = i ? col + offset : col - offset;
 
 				if (z < 0 || z >= maxOffset) { break; }
 
-				if (grid[row][z] == grid[row][col]) 
+				if (grid[row][z] == grid[row][col])
 				{
 					if (i)
 					{
@@ -62,7 +48,7 @@ MatchList GetMatch(int row, int col, int maxOffset, int** grid, Direction dir)
 					{
 						matches.insert(matches.begin(), make_pair(row, z));
 					}
-					
+
 				}
 				else {
 					break;
@@ -90,13 +76,13 @@ void GetDirMatches(int** grid, int nrow, int ncol, vector<MatchList>& matches, D
 			}
 			else
 			{
-				 match = GetMatch(i, j, max2, grid, Direction::Horizontal);
+				match = GetMatch(i, j, max2, grid, Direction::Horizontal);
 			}
-			
-			if (match.size() >=3)
+
+			if (match.size() >= 3)
 			{
 				matches.push_back(match);
-				j = (dir == Direction::Horizontal ? match.back().second : match.back().first ) + 1;
+				j = (dir == Direction::Horizontal ? match.back().second : match.back().first) + 1;
 			}
 			else
 			{
@@ -112,19 +98,4 @@ void GetAllHorVerMatches(int** grid, int nrow, int ncol, vector<MatchList>& matc
 {
 	GetDirMatches(grid, nrow, ncol, matchList, Direction::Horizontal);
 	GetDirMatches(grid, nrow, ncol, matchList, Direction::Vertical);
-}
-
-bool SortBySizeAsc(const MatchList &a, const MatchList &b)
-{
-	return (a.size() < b.size());
-}
-
-bool SortBySizeDesc(const MatchList &a, const MatchList &b)
-{
-	return (a.size() > b.size());
-}
-
-void SortMatchList(vector<MatchList>& matchList)
-{
-	sort(matchList.begin(), matchList.end(), SortBySizeDesc);
 }

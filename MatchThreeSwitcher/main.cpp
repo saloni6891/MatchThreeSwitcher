@@ -1,9 +1,7 @@
-#include <cmath>
 #include <cstdio>
-#include <vector>
 #include <iostream>
-#include <algorithm>
-#include "SortingMatches.h"
+#include "MatchThree.h"
+#include "SortUtil.h"
 using namespace std;
 
 int main() {
@@ -39,10 +37,10 @@ int main() {
 		arrPointer[i] = arrTest_1[i];
 	}
 
-	vector<MatchList> matches;
-	GetAllHorVerMatches(arrPointer, 8, 8, matches);
-	SortMatchList(matches);
-	auto finalSortMatch = SortAndRejectMatches(arrPointer, 8, 8);
+	vector<MatchList> matches_Problem1;
+	GetAllHorVerMatches(arrPointer, 8, 8, matches_Problem1);
+	SortMatchList(matches_Problem1);
+	auto ShapeMatch_Problem2 = SortAndUniquifyMatches(arrPointer, 8, 8);
 	
 	int temp;
 	cout << "This is Match-Three Switcher";
