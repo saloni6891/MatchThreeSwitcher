@@ -4,7 +4,7 @@
 #include <iostream>
 #include <algorithm>
 //#include "Match.h
-#include "FindShapeMatch.h"
+#include "FindSquare.h"
 #include "ShapeMatch.h"
 using namespace std;
 
@@ -40,7 +40,7 @@ int main() {
 	}
 	auto newMatch = GetAllHorVerMatches(arrPointer, 8, 8);
 	auto sortedMatch = SortMatchList(newMatch);
-	auto smallLMatch = FindLShapeMatches(arrPointer, 8, 8);
+	auto smallLMatch = FindSquareShapeMatches(arrPointer, 8, 8);
 	
 	int temp;
 	cout << "This is Match-Three Switcher";
