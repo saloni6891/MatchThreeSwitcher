@@ -115,13 +115,18 @@ vector<MatchList> GetAllHorVerMatches(int** grid, int nrow, int ncol)
 	return allMatches;
 }
 
-bool SortBySize(const MatchList &a, const MatchList &b)
+bool SortBySizeAscending(const MatchList &a, const MatchList &b)
 {
 	return (a.size() < b.size());
 }
 
+bool SortBySizeDescending(const MatchList &a, const MatchList &b)
+{
+	return (a.size() > b.size());
+}
+
 vector<MatchList> SortMatchList(std::vector<MatchList>& matchList)
 {
-	sort(matchList.begin(), matchList.end(), SortBySize);
+	sort(matchList.begin(), matchList.end(), SortBySizeDescending);
 	return matchList;
 }

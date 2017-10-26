@@ -96,7 +96,6 @@ set<MatchList> FindLShapeMatches(int** grid, int nrow, int ncol)
 				if (match.size() >= 3)
 				{
 					allLMatches.insert(match);
-					//j = j + match.back().second + 1;
 					++j;
 				}
 				else
