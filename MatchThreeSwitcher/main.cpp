@@ -3,24 +3,10 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
-//#include "Match.h
-#include "FindSquare.h"
-#include "ShapeMatch.h"
-#include "FindZMatch.h"
 #include "SortingMatches.h"
 using namespace std;
 
 int main() {
-
-	int arr[6][8] =
-	{
-		{ 6,1,4,3,2,2,4,2 },
-		{ 6,6,5,3,6,6,2,2 },
-		{ 3,6,1,5,6,6,4,2 },
-		{ 5,2,5,5,5,4,2,2 },
-		{ 4,4,2,3,5,5,4,2 },
-		{ 4,6,5,2,5,6,2,2 }
-	};
 
 	int arrTest[8][8] =
 	{
@@ -44,7 +30,6 @@ int main() {
 	vector<MatchList> matches;
 	GetAllHorVerMatches(arrPointer, 8, 8, matches);
 	SortMatchList(matches);
-	auto smallLMatch = FindZShapeMatches(arrPointer, 8, 8);
 	auto finalSortMatch = SortAndRejectMatches(arrPointer, 8, 8);
 	
 	int temp;

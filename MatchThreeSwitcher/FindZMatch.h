@@ -1,8 +1,4 @@
 #pragma once
-#include <cmath>
-#include <vector>
-#include <set>
-#include <unordered_set>
 #include "FindShapeMatch.h"
 using namespace std;
 
@@ -89,18 +85,12 @@ set<MatchList> FindZShapeMatches(int** grid, int nrow, int ncol)
 	set<MatchList> allLMatches;
 	for (int i = 0; i < nrow; ++i)
 	{
-		int j = 0;
-		while (j < ncol)
+		for(int j = 0; j < ncol; ++j)
 		{
 			MatchList match = GetZMatch(i, j, nrow, ncol, grid);
 			if (match.size() >= 3)
 			{
 				allLMatches.insert(match);
-				++j;
-			}
-			else
-			{
-				++j;
 			}
 		}
 	}

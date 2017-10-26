@@ -88,21 +88,14 @@ set<MatchList> FindLShapeMatches(int** grid, int nrow, int ncol)
 	set<MatchList> allLMatches;
 	for (int i = 0; i < nrow; ++i)
 	{
-		int j = 0;
-		while (j < ncol)
+		for (int j = 0; j < ncol; j++)
 		{
-				MatchList match = GetLMatch(i, j, nrow, ncol, grid);
-				if (match.size() >= 3)
-				{
-					allLMatches.insert(match);
-					++j;
-				}
-				else
-				{
-					++j;
-				}
+			MatchList match = GetLMatch(i, j, nrow, ncol, grid);
+			if (match.size() >= 3)
+			{
+				allLMatches.insert(match);
+			}
 		}
 	}
-
 	return allLMatches;
 }
